@@ -1,0 +1,62 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  type?: 'website' | 'article';
+  publishedTime?: string;
+}
+
+const { 
+  title, 
+  description = 'Engineering intelligence at bare-metal speed.',
+  image = '/og-image.png',
+  type = 'website',
+  publishedTime
+} = Astro.props;
+
+const siteUrl = 'https://awakener.dev';
+const fullTitle = title === 'Awakener' ? title : `${title} | Awakener`;
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+    <meta name="generator" content={Astro.generator} />
+    
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    
+    <meta property="og:type" content={type} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}${image}`} />
+    
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={siteUrl} />
+    <meta property="twitter:title" content={fullTitle} />
+    <meta property="twitter:description" content={description} />
+    <meta property="twitter:image" content={`${siteUrl}${image}`} />
+    
+    {publishedTime && (
+      <meta property="article:published_time" content={publishedTime} />
+    )}
+    
+    <meta name="theme-color" content="#000000" />
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  
+  <body class="bg-black text-white antialiased min-h-screen">
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,102 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+const allPosts: CollectionEntry<'blog'>[] = await getCollection('blog');
+
+function getReadingTime(content: string): number {
+  const wordsPerMinute = 200;
+  const words = content.trim().split(/\s+/).length;
+  return Math.ceil(words / wordsPerMinute);
+}
+
+const posts = allPosts
+  .sort((a: CollectionEntry<'blog'>, b: CollectionEntry<'blog'>) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .map((post: CollectionEntry<'blog'>) => ({
+    ...post,
+    readingTime: getReadingTime(post.body)
+  }));
+---
+
+<BaseLayout 
+  title="Writing"
+  description="Technical thoughts on engineering, AI, and bare-metal development."
+>
+  <Header />
+  
+  <main class="min-h-screen pt-24 pb-24 px-6 relative z-10">
+    <div class="max-w-3xl mx-auto">
+      <!-- Breadcrumb -->
+      <nav class="font-mono text-sm text-secondary mb-8" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-white transition-colors link-underline">~</a>
+        <span class="opacity-50"> / </span>
+        <span>blog</span>
+      </nav>
+      
+      <!-- Header -->
+      <header class="mb-12 sm:mb-16 stagger">
+        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl mb-4">
+          Writing
+        </h1>
+        <p class="font-mono text-secondary text-base sm:text-lg">
+          Technical thoughts on engineering, AI, and bare-metal development.
+        </p>
+      </header>
+      
+      <!-- Posts List -->
+      {posts.length > 0 ? (
+        <div class="border-t border-subtle">
+          {posts.map((post) => (
+            <a 
+              href={`/blog/${post.slug}`}
+              class="block py-6 sm:py-8 border-b border-subtle hover-lift group"
+            >
+              <div class="flex flex-col gap-2 sm:gap-3">
+                <h2 class="font-mono text-base sm:text-lg text-white group-hover:opacity-80 transition-opacity">
+                  {post.data.title}
+                </h2>
+                <p class="font-mono text-sm text-secondary line-clamp-2">
+                  {post.data.description}
+                </p>
+                <div class="font-mono text-xs text-secondary flex flex-wrap items-center gap-3 sm:gap-4">
+                  <span>{post.data.pubDate.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</span>
+                  <span>{post.readingTime} min read</span>
+                  {post.data.tags && post.data.tags.length > 0 && (
+                    <span class="hidden sm:inline opacity-60">
+                      {post.data.tags.map((tag: string) => `#${tag}`).join(' ')}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </a>
+          ))}
+        </div>
+      ) : (
+        <div class="font-mono text-secondary text-center py-24">
+          <p>No posts yet.</p>
+          <p class="text-sm mt-2 opacity-60">Check back soon.</p>
+        </div>
+      )}
+      
+      <!-- Back link -->
+      <div class="mt-12 sm:mt-16">
+        <a 
+          href="/" 
+          class="font-mono text-sm text-secondary hover:text-white transition-colors link-underline"
+        >
+          ← Back to home
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+</style>

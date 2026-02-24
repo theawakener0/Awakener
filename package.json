@@ -9,6 +9,20 @@
     "astro": "astro"
   },
   "dependencies": {
-    "astro": "^5.17.1"
+    "@astrojs/mdx": "^4.3.13",
+    "@astrojs/sitemap": "^3.7.0",
+    "@iconify-json/lucide": "^1.2.87",
+    "@iconify-json/simple-icons": "^1.2.69",
+    "astro": "^5.17.1",
+    "astro-icon": "^1.1.5",
+    "p5": "^2.2.2",
+    "three": "^0.183.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/three": "^0.183.1",
+    "autoprefixer": "^10.4.24",
+    "postcss": "^8.5.6",
+    "tailwindcss": "3"
   }
 }

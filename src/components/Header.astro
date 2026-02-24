@@ -1,0 +1,151 @@
+---
+const navLinks = [
+  { href: '#projects', label: 'projects' },
+  { href: '#writing', label: 'writing' },
+  { href: '#stack', label: 'stack' },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50 px-6 py-5 sm:py-6 bg-black/80 backdrop-blur-sm">
+  <nav class="max-w-6xl mx-auto flex items-center justify-between">
+    <a href="/" class="font-serif text-lg sm:text-xl hover:opacity-70 transition-opacity">
+      Awakener
+    </a>
+    
+    <div class="hidden sm:flex items-center gap-6 sm:gap-8">
+      {navLinks.map(link => (
+        <a 
+          href={link.href} 
+          class="font-mono text-sm text-secondary hover:text-white transition-colors link-underline"
+        >
+          {link.label}
+        </a>
+      ))}
+      <a 
+        href="https://github.com/theawakener0"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono text-sm text-secondary hover:text-white transition-colors link-underline"
+      >
+        GitHub
+      </a>
+    </div>
+    
+    <button 
+      id="menu-toggle"
+      class="sm:hidden w-10 h-10 flex items-center justify-center text-secondary hover:text-white transition-colors"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<div 
+  id="mobile-menu" 
+  class="fixed inset-0 z-40 bg-black/95 backdrop-blur-sm transform -translate-y-full opacity-0 transition-all duration-300 ease-out sm:hidden"
+>
+  <div class="flex flex-col items-center justify-center h-full gap-8 px-6">
+    {navLinks.map((link, index) => (
+      <a 
+        href={link.href} 
+        class="font-serif text-3xl text-secondary hover:text-white transition-colors mobile-link"
+        style={`animation-delay: ${index * 50}ms`}
+      >
+        {link.label}
+      </a>
+    ))}
+    <a 
+      href="https://github.com/theawakener0"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-serif text-3xl text-secondary hover:text-white transition-colors mobile-link"
+      style="animation-delay: 150ms"
+    >
+      GitHub
+    </a>
+  </div>
+</div>
+
+<style>
+  .mobile-link {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  :global(.mobile-menu-open) .mobile-link {
+    animation: slideIn 0.3s ease-out forwards;
+  }
+
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  :global(.mobile-menu-open #mobile-menu) {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  :global(.menu-open .menu-icon:nth-child(1)) {
+    d: path("M6 18L18 6M6 6l12 12");
+  }
+
+  :global(.menu-open .menu-icon:nth-child(2)) {
+    opacity: 0;
+  }
+
+  :global(.menu-open .menu-icon:nth-child(3)) {
+    d: path("M6 6l12 12");
+  }
+</style>
+
+<script>
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const menuIcon = document.getElementById('menu-icon');
+  let isOpen = false;
+
+  function toggleMenu() {
+    isOpen = !isOpen;
+    
+    if (isOpen) {
+      document.body.classList.add('mobile-menu-open');
+      menuToggle?.classList.add('menu-open');
+      menuToggle?.setAttribute('aria-expanded', 'true');
+      menuIcon?.setAttribute('d', 'M6 18L18 6M6 6l12 12');
+    } else {
+      document.body.classList.remove('mobile-menu-open');
+      menuToggle?.classList.remove('menu-open');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuIcon?.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+    }
+  }
+
+  function closeMenu() {
+    if (isOpen) {
+      isOpen = false;
+      document.body.classList.remove('mobile-menu-open');
+      menuToggle?.classList.remove('menu-open');
+      menuToggle?.setAttribute('aria-expanded', 'false');
+      menuIcon?.setAttribute('d', 'M4 6h16M4 12h16M4 18h16');
+    }
+  }
+
+  menuToggle?.addEventListener('click', toggleMenu);
+
+  mobileMenu?.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', closeMenu);
+  });
+
+  document.addEventListener('click', (e) => {
+    if (isOpen && mobileMenu && !mobileMenu.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
+      closeMenu();
+    }
+  });
+</script>

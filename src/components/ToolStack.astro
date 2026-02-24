@@ -1,0 +1,80 @@
+---
+const tools = {
+  languages: [
+    { name: 'Python', icon: 'python' },
+    { name: 'TypeScript', icon: 'typescript' },
+    { name: 'JavaScript', icon: 'javascript' },
+    { name: 'Go', icon: 'go' },
+    { name: 'C', icon: 'c' },
+    { name: 'C++', icon: 'cplusplus' },
+    { name: 'Rust', icon: 'rust' },
+    { name: 'Lua', icon: 'lua' },
+  ],
+  frameworks: [
+    { name: 'Flask', icon: 'flask' },
+    { name: 'Django', icon: 'django' },
+    { name: 'Bun', icon: 'bun' },
+    { name: 'React', icon: 'react' },
+    { name: 'Next.js', icon: 'nextjs' },
+    { name: 'Astro', icon: 'astro' },
+  ],
+  devops: [
+    { name: 'GitHub', icon: 'github' },
+    { name: 'Linux', icon: 'linux' },
+    { name: 'Bash', icon: 'bash' },
+    { name: 'Oh My Zsh', icon: 'ohmyzsh' },
+    { name: 'Neovim', icon: 'neovim' },
+    { name: 'Raspberry Pi', icon: 'raspberrypi' },
+  ],
+};
+
+const categories = [
+  { key: 'languages', label: 'Languages' },
+  { key: 'frameworks', label: 'Frameworks' },
+  { key: 'devops', label: 'DevOps' },
+];
+
+const CDN_BASE = 'https://cdn.jsdelivr.net/npm/devicon@2.16.0/icons';
+
+const getIconUrl = (icon: string) => {
+  if (['django', 'ohmyzsh'].includes(icon)) {
+    return `${CDN_BASE}/${icon}/${icon}-plain.svg`;
+  }
+  return `${CDN_BASE}/${icon}/${icon}-original.svg`;
+};
+---
+
+<section class="py-20 sm:py-24 md:py-32 px-6" id="stack">
+  <div class="max-w-6xl mx-auto">
+    <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl mb-10 sm:mb-12">Tool Stack</h2>
+    
+    {categories.map((category) => (
+      <div class="mb-8 sm:mb-10">
+        <h3 class="font-mono text-xs sm:text-sm text-secondary uppercase tracking-wider mb-4">{category.label}</h3>
+        <div class="flex flex-wrap gap-3 sm:gap-4">
+          {tools[category.key as keyof typeof tools].map((tool) => (
+            <div class="group relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center bg-white/5 border border-white/10 rounded-lg hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-default">
+              <img 
+                src={getIconUrl(tool.icon)}
+                alt={tool.name}
+                width="40"
+                height="40"
+                class="object-contain w-8 h-8 sm:w-10 sm:h-10 opacity-60 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                loading="lazy"
+              />
+              <span class="font-mono text-[10px] sm:text-xs text-secondary group-hover:text-white transition-colors opacity-0 group-hover:opacity-100 absolute -bottom-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-black px-2 py-1 rounded border border-white/10">
+                {tool.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  section {
+    scroll-margin-top: 80px;
+  }
+</style>

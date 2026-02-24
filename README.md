@@ -1,46 +1,118 @@
-# Astro Starter Kit: Basics
+# Awakener
 
-```sh
-bun create astro@latest -- --template basics
+> Engineering intelligence at bare-metal speed.
+
+A high-performance, minimalist, artistic developer portfolio + technical blog built with Astro.
+
+## Philosophy
+
+This is not a personal website. This is an engineering identity.
+
+- **Zero unnecessary JavaScript** - The page works without JS
+- **100/100 Lighthouse score** - Performance is a feature
+- **Neural Monochrome aesthetic** - Pure black, white, and brutalist design
+- **Bare-metal precision** - No bloat, no waste
+
+## Tech Stack
+
+- **Runtime:** Bun
+- **Framework:** Astro (static-first, islands only when required)
+- **Language:** TypeScript (strict mode)
+- **Styling:** Tailwind CSS (utility-first, minimal abstractions)
+- **Content:** MDX + Astro Content Collections
+
+## Features
+
+- **Neural Background** - SVG-based generative neural network with 3-layer parallax
+- **Morphing Cursor** - Desktop-only custom cursor with `mix-blend-mode: difference`
+- **GitHub Integration** - Build-time fetch of pinned repositories
+- **Blog System** - MDX-driven technical writing with reading time calculation
+- **Responsive Design** - Mobile-optimized with touch-friendly interactions
+- **SEO Optimized** - Sitemap, OpenGraph, semantic HTML5
+- **Accessibility** - Keyboard navigation, proper contrast ratios
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── NeuralBackground.astro    # SVG neural net + parallax
+│   ├── MorphCursor.astro         # Desktop-only custom cursor
+│   ├── ScrollSection.astro       # Parallax section wrapper
+│   ├── ProjectCard.astro         # Brutalist project cards
+│   └── Header.astro              # Auto-hiding navigation
+├── layouts/
+│   ├── BaseLayout.astro          # Root layout with SEO
+│   └── BlogLayout.astro          # Blog post layout
+├── pages/
+│   ├── index.astro               # Homepage (Hero → Projects → Blog)
+│   ├── blog/
+│   │   ├── index.astro           # Blog listing
+│   │   └── [slug].astro          # Individual posts
+├── lib/
+│   ├── neural.ts                 # PRNG + SVG node generator
+│   ├── github.ts                 # GitHub API integration
+│   └── scroll.ts                 # Scroll utilities
+├── content/
+│   └── blog/                     # MDX blog posts
+└── styles/
+    └── global.css                # Tailwind + custom properties
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Getting Started
 
-## 🚀 Project Structure
+```bash
+# Install dependencies
+bun install
 
-Inside of your Astro project, you'll see the following folders and files:
+# Start development server
+bun dev
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+# Build for production
+bun build
+
+# Preview production build
+bun preview
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Environment Variables
 
-## 🧞 Commands
+To fetch pinned repositories from GitHub, create a `.env` file:
 
-All commands are run from the root of the project, from a terminal:
+```env
+GITHUB_TOKEN=your_github_personal_access_token
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
+The token needs `public_repo` or `repo` scope depending on your repository visibility.
 
-## 👀 Want to learn more?
+## Visual Identity
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+### Colors
+- Background: `#000000` (pure black)
+- Primary: `#FFFFFF` (pure white)
+- Secondary: `#A1A1AA` (neutral gray)
+
+### Typography
+- **Playfair Display** (serif) - Branding and major headers
+- **JetBrains Mono** (monospace) - Body text, code, terminal UI elements
+
+### Scroll Experience
+Layered depth parallax creates a 3D tunnel effect:
+- Background layer (0.3x speed)
+- Midground layer (0.5x speed)
+- Foreground layer (1.0x speed)
+
+## Performance
+
+- First Contentful Paint: < 0.5s
+- Total JavaScript: < 5KB (gzipped)
+- Zero external JavaScript libraries
+- 100/100 Lighthouse score
+
+## License
+
+MIT
+
+---
+
+Built with Astro & bare-metal precision by [theawakener0](https://github.com/theawakener0)

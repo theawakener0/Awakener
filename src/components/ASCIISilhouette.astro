@@ -1,0 +1,199 @@
+---
+// ASCII Earth Animation - p5.js WEBGL with detailed ASCII shading
+---
+
+<div class="ascii-earth-container">
+  <pre id="ascii-earth" class="ascii-earth">LOADING ASCII EARTH...</pre>
+</div>
+
+<style>
+  .ascii-earth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 400px;
+    background: #000;
+    padding: 20px 0;
+  }
+  
+  .ascii-earth {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 8px;
+    line-height: 8px;
+    white-space: pre;
+    color: #ffffff;
+    text-align: left;
+    user-select: none;
+    margin: 0;
+    opacity: 0.9;
+  }
+  
+  @media (max-width: 768px) {
+    .ascii-earth {
+      font-size: 5px;
+      line-height: 5px;
+    }
+  }
+</style>
+
+<script>
+  function initP5() {
+    const container = document.getElementById('ascii-earth');
+    if (!container) {
+      console.error('ASCII Earth container not found');
+      return;
+    }
+
+    const sketch = (p) => {
+      let buffer;
+      let earthTexture;
+      let textureLoaded = false;
+      
+      const density = " .'-:_,^=;><+!rc*/z?sLTv)J7(|Fi{C}fI31tlu[neoZ5Yxjya]2ESwqkP6h9d4VpOGbUAKXHm8RD#$Bg0MNWQ%&@";
+      
+      const cols = 100;
+      const rows = 60;
+      
+      let rotation = 0;
+      const rotationSpeed = 0.015;
+
+      p.setup = () => {
+        p.noCanvas();
+        
+        buffer = p.createGraphics(800, 800, p.WEBGL);
+        buffer.pixelDensity(1);
+        buffer.ortho(-buffer.width / 2, buffer.width / 2, -buffer.height / 2, buffer.height / 2, -2000, 2000);
+        
+        earthTexture = createEarthTexture(p);
+        textureLoaded = true;
+        
+        console.log('ASCII Earth initialized');
+      };
+
+      p.draw = () => {
+        if (!textureLoaded) return;
+
+        buffer.clear();
+        buffer.background(0);
+        
+        buffer.ambientLight(25);
+        buffer.directionalLight(255, 255, 255, 1, 0.2, -1);
+
+        buffer.push();
+        buffer.rotateZ(23.5 * p.PI / 180);
+        buffer.rotateY(rotation);
+        
+        buffer.noStroke();
+        buffer.texture(earthTexture);
+        buffer.sphere(buffer.width * 0.45, 60, 60);
+        buffer.pop();
+
+        buffer.loadPixels();
+        
+        let asciiImage = "";
+        const rGlobe = buffer.width * 0.45;
+        const centerX = buffer.width / 2;
+        const centerY = buffer.height / 2;
+
+        for (let j = 0; j < rows; j++) {
+          let rowStr = "";
+          for (let i = 0; i < cols; i++) {
+            let x = Math.floor(p.map(i, 0, cols, 0, buffer.width));
+            let y = Math.floor(p.map(j, 0, rows, 0, buffer.height));
+            
+            x = p.constrain(x, 0, buffer.width - 1);
+            y = p.constrain(y, 0, buffer.height - 1);
+
+            let distFromCenter = p.dist(x, y, centerX, centerY);
+
+            if (distFromCenter > rGlobe + 1) {
+              let hash = p.sin(x * 12.9898 + y * 78.233) * 43758.5453;
+              let rand = hash - Math.floor(hash);
+              if (rand > 0.992) rowStr += ".";
+              else if (rand > 0.97) rowStr += "'";
+              else rowStr += " ";
+            } else {
+              let idx = (x + y * buffer.width) * 4;
+              let r = buffer.pixels[idx];
+              let g = buffer.pixels[idx + 1];
+              let b = buffer.pixels[idx + 2];
+
+              let br = 0.299 * r + 0.587 * g + 0.114 * b;
+              
+              let charIndex = Math.floor(p.map(br, 0, 255, 0, density.length - 1));
+              charIndex = p.constrain(charIndex, 0, density.length - 1);
+              
+              rowStr += density.charAt(charIndex);
+            }
+          }
+          asciiImage += rowStr + "\n";
+        }
+
+        container.textContent = asciiImage;
+        
+        rotation += rotationSpeed;
+      };
+      
+      function createEarthTexture(pg) {
+        const texW = 512;
+        const texH = 256;
+        let img = pg.createGraphics(texW, texH);
+        img.pixelDensity(1);
+        img.loadPixels();
+        
+        for (let y = 0; y < texH; y++) {
+          for (let x = 0; x < texW; x++) {
+            let theta = p.map(x, 0, texW, -p.PI, p.PI);
+            let phi = p.map(y, 0, texH, -p.PI / 2, p.PI / 2);
+            
+            let nx = p.cos(phi) * p.cos(theta);
+            let ny = p.sin(phi); 
+            let nz = p.cos(phi) * p.sin(theta);
+            
+            let n = 0; 
+            let amp = 1; 
+            let freq = 2;
+            for(let i = 0; i < 5; i++) {
+              n += p.noise(nx * freq + 10, ny * freq + 10, nz * freq + 10) * amp;
+              freq *= 2; 
+              amp *= 0.5;
+            }
+            n = n / 1.6;
+            
+            let r, g, b;
+            if (n < 0.42) {
+              r = 8; g = 12; b = 25;
+            } else if (n < 0.48) {
+              r = 20; g = 35; b = 60;
+            } else if (n < 0.52) {
+              r = 140; g = 130; b = 70;
+            } else if (n < 0.65) {
+              r = 35; g = 80; b = 35;
+            } else if (n < 0.78) {
+              r = 90; g = 90; b = 95;
+            } else {
+              r = 200; g = 200; b = 210;
+            }
+            
+            if (Math.abs(ny) > 0.82) { 
+              r = 240; g = 245; b = 255; 
+            }
+
+            let idx = (x + y * texW) * 4;
+            img.pixels[idx] = r;
+            img.pixels[idx + 1] = g;
+            img.pixels[idx + 2] = b;
+            img.pixels[idx + 3] = 255;
+          }
+        }
+        img.updatePixels();
+        return img;
+      }
+    };
+
+    new p5(sketch);
+  }
+
+  window.addEventListener('DOMContentLoaded', initP5);
+</script>
