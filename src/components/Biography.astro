@@ -14,6 +14,15 @@ const skills = [
   'CLI & Developer Experience (Typescript & Go)',
   'Research → Prototype',
 ];
+
+const experience = [
+  {
+    role: 'Co-leader',
+    org: 'AlexHack',
+    period: 'Sep 2025 – Present',
+    description: 'Empowering new developers through workshops, bootcamps, and community events.',
+  },
+];
 ---
 
 <section class={`py-20 sm:py-24 md:py-32 px-6 ${className}`} id="about">
@@ -30,7 +39,7 @@ const skills = [
         
         <!-- Quote -->
         <p class="font-serif text-xl sm:text-2xl md:text-3xl leading-relaxed text-white/90">
-            Every abstraction must justify its cost. If I don’t understand the layer below, I won’t trust the layer above
+            Every abstraction must justify its cost. If I don't understand the layer below, I won't trust the layer above
         </p>
         
         <!-- Bio -->
@@ -38,7 +47,30 @@ const skills = [
           <p>
             Self-taught engineer and creative technologist. Built CLIs, AI agents, shells, and low-level tools early. Learns by shipping, not consuming.
           </p>
+          <p>
+            Co-leader @ <span class="text-white">AlexHack</span> — empowering new developers through workshops and bootcamps. Also mentoring teen developers in Egypt to stay updated and grow.
+          </p>
         </div>
+        
+        <!-- Experience -->
+        {experience.length > 0 && (
+          <div class="space-y-3">
+            <p class="font-mono text-xs text-secondary uppercase tracking-widest">Experience</p>
+            <div class="space-y-4">
+              {experience.map(exp => (
+                <div class="font-mono text-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="text-white">{exp.org}</span>
+                    <span class="text-secondary">—</span>
+                    <span class="text-secondary">{exp.role}</span>
+                  </div>
+                  <p class="text-xs text-secondary mt-1">{exp.period}</p>
+                  <p class="text-secondary mt-1">{exp.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
         
         <!-- Skills -->
         <div class="space-y-3">

@@ -1,5 +1,6 @@
 ---
 const navLinks = [
+  { href: '#about', label: 'about' },
   { href: '#projects', label: 'projects' },
   { href: '#writing', label: 'writing' },
   { href: '#stack', label: 'stack' },
@@ -9,7 +10,7 @@ const navLinks = [
 <header class="fixed top-0 left-0 right-0 z-50 px-6 py-5 sm:py-6 bg-black/80 backdrop-blur-sm">
   <nav class="max-w-6xl mx-auto flex items-center justify-between">
     <a href="/" class="font-serif text-lg sm:text-xl hover:opacity-70 transition-opacity">
-      Awakener
+      Ahmed Khaled
     </a>
     
     <div class="hidden sm:flex items-center gap-6 sm:gap-8">
@@ -21,6 +22,14 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+      <a 
+        href="https://linkedin.com/in/ahmed-khaled-b96814211"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="font-mono text-sm text-secondary hover:text-white transition-colors link-underline"
+      >
+        LinkedIn
+      </a>
       <a 
         href="https://github.com/theawakener0"
         target="_blank"
@@ -59,11 +68,20 @@ const navLinks = [
       </a>
     ))}
     <a 
-      href="https://github.com/theawakener0"
+      href="https://linkedin.com/in/ahmed-khaled-b96814211"
       target="_blank"
       rel="noopener noreferrer"
       class="font-serif text-3xl text-secondary hover:text-white transition-colors mobile-link"
       style="animation-delay: 150ms"
+    >
+      LinkedIn
+    </a>
+    <a 
+      href="https://github.com/theawakener0"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="font-serif text-3xl text-secondary hover:text-white transition-colors mobile-link"
+      style="animation-delay: 200ms"
     >
       GitHub
     </a>
