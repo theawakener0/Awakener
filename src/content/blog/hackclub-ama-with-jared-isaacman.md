@@ -1,6 +1,6 @@
 ---
 title: "HackClub AMA with Jared Isaacman - Head of NASA "
-description: "Why tutorial culture is producing consumers instead of builders — and how to fix it."
+description: "My reflections on Jared Isaacman's HackClub AMA"
 pubDate: 2026-07-30
 tags: ["engineering", "learning", "mindset"]
 ---
